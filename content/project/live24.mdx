@@ -1,0 +1,48 @@
+import SkillBadge from "@/app/components/skill-badge";
+
+export const metadata = {
+  title: "Live24",
+  description:
+    "쇼핑몰에 설치만 하면 실시간 방송과 다시보기를 통한 영상 커머스가 가능한 플랫폼",
+  type: "work",
+};
+
+#### Live24
+
+쇼핑몰에 설치만 하면 실시간 방송과 다시보기를 통한 영상 커머스가 가능한 플랫폼
+
+링크: [Live24](https://live24.app/)
+
+#### 사용 기술
+
+<SkillBadge skill="Vue" src="vue.svg" /> <SkillBadge
+  skill="Nuxt"
+  src="nuxt.svg"
+/> <SkillBadge skill="Pinia" src="pinia.svg" /> <SkillBadge
+  skill="Tailwind CSS"
+  src="tailwind.svg"
+/>
+
+#### 주요 기능
+
+- **원클릭 설치**로 카페24 쇼핑몰에서 실시간 방송 및 다시보기 기능 제공
+- 상·하 스크롤 형 UI 기반의 시청자용 플레이어 페이지 지원
+- 채팅 관리, 프롬프트, AI 요약 등 기능을 갖춘 **실시간 방송용 스튜디오** 제공
+- 방송 종료 후 생성된 HLS 영상을 **트리머로 편집**하여 숏폼 영상 생성 가능
+
+#### 담당 역할 / 기여도
+
+- **공통 알림 시스템(Alert) 구성:**
+
+  - Pinia 기반 `Alert Store` 설계
+  - 최상단 레이아웃에서 알림 처리 및 호출 방식 프로그래밍화
+  - **모든 컴포넌트에서 간편하게** 알림 호출 가능하도록 전역 구조 설계
+
+- **HLS 기반 다시보기 트리머 개발:**
+  - HLS 영상을 2% 단위로 탐색해 주요 장면 캡처 후 타임라인 구성
+  - **GSAP 기반 드래그** UI로 시작/종료 지점 수직 막대 구현
+  - 막대 위치를 비율로 계산하여 실제 영상 시점으로 환산
+
+#### 스크린샷
+
+![live24-1](https://res.cloudinary.com/dd5hga1qy/image/upload/v1744731593/live24-1_mkvfzq.webp)

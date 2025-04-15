@@ -1,0 +1,74 @@
+import SkillBadge from "@/app/components/skill-badge";
+
+export const metadata = {
+  title: "Taska (WIP)",
+  description:
+    "프로젝트-버킷-태스크 단위로 일정과 관심사를 구조화해, 시각적 관리와 통계를 제공하는 생산성 앱",
+  type: "side",
+};
+
+#### Taska
+
+프로젝트-버킷-태스크 단위로 일정과 관심사를 구조화해, 시각적 관리와 통계를 제공하는 생산성 앱
+
+링크: [깃허브(진행 중)](https://github.com/yemson/taska)
+
+#### 사용 기술
+
+<SkillBadge skill="React" src="react.svg" /> <SkillBadge
+  skill="Zustand"
+  src="zustand.png"
+/> <SkillBadge skill="Firebase" src="firebase.svg" /> <SkillBadge
+  skill="Tailwind CSS"
+  src="tailwind.svg"
+/>
+
+#### 주요 기능
+
+- **프로젝트 중심 구조 구성:**
+
+  - 각 프로젝트는 최대 5개까지 생성 가능 (사용자 리소스 제한 고려)
+  - 삭제 시 종속된 버킷 및 태스크를 **자동 연쇄 삭제 처리**
+
+- **상태 전역 관리 및 최적화:**
+
+  - Zustand를 활용해 `projects`, `buckets`, `tasks` 상태 분리 저장
+
+- **라우팅 및 동기화 구조:**
+
+  - React Router 기반으로 URL에서 `projectId`, `bucketId`를 파라미터로 관리
+  - 선택된 프로젝트·버킷 상태와 URL 파라미터를 동기화하여 새로고침 대응
+
+- **통계 시각화 기능:**
+
+  - Chart.js로 태스크 통계 차트 구현
+
+    - 달성률(%) 카드
+    - 태스크 상태별 분포 (To-do / Doing / Done)
+    - 최근 완료 태스크 로그 시각화
+
+#### 담당 역할 / 기여도
+
+- **전체 앱 설계 및 구현 리드:**
+
+  - 컴포넌트/페이지 구조 설계, Zustand 전역 store 설계, 파이어베이스 구조 정의
+
+- **Firebase 연동 구현:**
+
+  - Firebase Auth를 통한 로그인/회원가입 및 상태 유지 처리
+  - Firestore 구조 설계: projects, buckets, tasks 단일 콜렉션 구조 + 참조 필드 기반 연결
+
+- **전역 상태 관리 최적화:**
+
+  - `useProjectStore`, `useBucketStore`, `useTaskStore` 등 모듈별 zustand store 분리
+  - `activeProject`, `activeBucket` 등 상태는 URL과 동기화되도록 설계
+
+- **삭제 로직 고도화:**
+
+  - 프로젝트 삭제 시 → 해당 프로젝트에 종속된 버킷/태스크 전부 삭제
+  - 버킷 삭제 시 → 해당 버킷의 태스크 전부 삭제
+
+- **차트 기반 통계 위젯 구현:**
+
+  - Chart.js로 완료율, 상태 분포, 최근 완료 태스크 그래프 구현
+  - 사용자 행동 흐름을 시각적으로 파악할 수 있는 **생산성 피드백 제공 구조**
