@@ -4,8 +4,6 @@ import { getProjects } from "../lib/projects";
 export default async function Projects() {
   const projects = await getProjects();
 
-  console.log(projects);
-
   return (
     <>
       <p className="mb-3 text-neutral-600 dark:text-neutral-300">프로젝트</p>

@@ -1,6 +1,7 @@
-import About, { metadata } from "@/content/about.mdx";
+import About from "@/content/about.mdx";
 
 export async function generateMetadata() {
+  const { metadata } = await import(`@/content/about.mdx`);
   return {
     title: metadata.title,
     description: metadata.description,
