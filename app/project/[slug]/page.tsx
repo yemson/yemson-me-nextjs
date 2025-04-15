@@ -16,7 +16,7 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
   const { metadata } = await import(`@/content/project/${slug}.mdx`);
@@ -28,7 +28,11 @@ export async function generateMetadata({
 
 export const dynamicParams = false;
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const { default: Post } = await import(`@/content/project/${slug}.mdx`);
   return (

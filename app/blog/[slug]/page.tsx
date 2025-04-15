@@ -12,9 +12,26 @@ export function generateStaticParams() {
     }));
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const { metadata } = await import(`@/content/blog/${slug}.mdx`);
+  return {
+    title: metadata.title,
+    description: metadata.description,
+  };
+}
+
 export const dynamicParams = false;
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const { default: Post } = await import(`@/content/blog/${slug}.mdx`);
   return (
