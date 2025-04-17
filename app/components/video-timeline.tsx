@@ -88,8 +88,10 @@ export default function VideoTimeline({ src }: VideoTimelineProps) {
       <div className="relative">
         {loading && (
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-lg">
-            <div className="bg-white/90 px-4 py-2 rounded-md">
-              <p className="text-sm font-medium">타임라인 생성 중...</p>
+            <div className="bg-white/90 dark:bg-neutral-900/90 px-4 py-2 rounded-md">
+              <p className="text-sm font-medium dark:text-neutral-400">
+                타임라인 생성 중...
+              </p>
             </div>
           </div>
         )}
@@ -98,6 +100,7 @@ export default function VideoTimeline({ src }: VideoTimelineProps) {
           src={src}
           controls={!loading}
           muted
+          crossOrigin="anonymous"
           className="w-full h-auto rounded-lg"
         />
       </div>
@@ -106,7 +109,7 @@ export default function VideoTimeline({ src }: VideoTimelineProps) {
         <div className="relative flex overflow-hidden h-24 rounded-lg">
           {loading ? (
             // Skeleton loader while frames are being processed
-            <div className="bg-neutral-100 animate-pulse w-full h-full" />
+            <div className="bg-neutral-100 animate-pulse w-full h-full dark:bg-neutral-800/40"></div>
           ) : (
             // Actual frames when loading is complete
             frames.map((frame, index) => (
