@@ -185,7 +185,11 @@ video.addEventListener("seeked", captureFrame);
 
 잘 구현했다면 이와 같은 모습을 볼 수 있을 것 입니다.
 
-<VideoTimeline src="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8" />
+<div className="not-prose flex flex-col items-center justify-center w-full h-full gap-3 mb-10">
+  <VideoTimeline src="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8" />
+
+  <span className="text-neutral-500 text-sm">IOS에서는 제대로 노출되지 않을 수 있습니다.</span>
+</div>
 
 저 같은 경우는 15 프레임을 캡쳐하여 타임라인을 구현했지만, 비디오의 길이에 따라 적절한 프레임 수를 조정해주면 됩니다.
 예를 들어 width에 따라 프레임 수를 조정하는 방법도 있습니다.

@@ -84,8 +84,8 @@ export default function VideoTimeline({ src }: VideoTimelineProps) {
   }, [src]);
 
   return (
-    <div className="not-prose">
-      <div className="relative">
+    <div className="not-prose w-full h-auto rounded-lg">
+      <div className="relative w-full h-auto rounded-lg">
         {loading && (
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-lg">
             <div className="bg-white/90 dark:bg-neutral-900/90 px-4 py-2 rounded-md">
