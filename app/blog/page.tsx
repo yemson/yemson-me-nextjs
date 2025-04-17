@@ -12,7 +12,7 @@ export default async function Page() {
         <Link
           href={`/blog/${post.slug}`}
           key={post.slug}
-          className="not-prose flex justify-between flex-wrap mb-4 !opacity-90 hover:!opacity-100 transition-all duration-200 rounded-lg bg-neutral-50 p-4 dark:bg-neutral-800/40 dark:hover:bg-neutral-800/70 hover:shadow-sm"
+          className="not-prose flex justify-between flex-wrap mb-4 !opacity-90 hover:!opacity-100 transition-all duration-200 rounded-lg bg-neutral-50 p-4 dark:bg-neutral-800/40 dark:hover:bg-neutral-800/70"
         >
           <div>
             <h1 className="text-xl font-bold">{post.title}</h1>
