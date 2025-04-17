@@ -1,0 +1,198 @@
+import VideoTimeline from "@/app/components/video-timeline";
+import VideoPlayer from "@/app/components/video-player";
+
+export const metadata = {
+  title: "HLS 비디오 타임라인 구현하기",
+  description: "HLS를 이용해 비디오 타임라인을 구현하는 방법",
+  date: "2025-04-17",
+};
+
+<div className="flex flex-col items-center justify-center w-full h-full not-prose gap-3 mb-10">
+  <img src="https://res.cloudinary.com/dd5hga1qy/image/upload/v1744863063/ipados-18-ipad-pro-photos-video-edit-trim_hajy70.png" />
+  <span className="text-neutral-500 text-sm">애플 비디오 타임라인</span>
+</div>
+
+웹 애플리케이션에서 비디오 콘텐츠를 제공할 때 사용자의 편리한 탐색과 직관적인 조작을 위해 타임라인을 구현하는 것은 매우 중요할지도 모릅니다.
+타임라인을 통해 사용자는 원하는 장면으로 빠르게 이동하거나 썸네일을 통해 내용을 미리 확인할 수 있어 콘텐츠와의 상호작용이 한결 쉬워집니다.
+
+타임라인을 구현하는 방법에는 다양한 방식이 있지만, 이번 글에서는 특히 HLS(HTTP Live Streaming)를 활용한 방법을 살펴보려고 합니다.
+HLS는 Apple에서 개발한 스트리밍 프로토콜로, 비디오 파일을 여러 개의 작은 세그먼트(segment)로 나눠 전송합니다.
+덕분에 사용자는 기다림 없이 바로 영상을 시청할 수 있고, 네트워크 환경에 따라 자동으로 화질을 조정해 끊김 없는 재생 경험을 제공합니다.
+
+_이러한 특징 덕분에 HLS는 넷플릭스나 유튜브 같은 대형 미디어 플랫폼에서도 적극적으로 사용되고 있습니다._
+
+## 구현
+
+### HLS 스트림 비디오 컴포넌트 만들기
+
+_아래 예제는 React를 기반으로 작성되었습니다._
+
+우선 HLS.js 라이브러리를 설치와 비디오 태그를 사용하여 비디오를 재생할 수 있는 컴포넌트를 만들어보겠습니다.
+
+```bash
+npm install hls.js
+```
+
+```typescript
+import { useRef } from "react";
+import Hls from "hls.js";
+
+export default function VideoPlayer({ src }: { src: string }) {
+  // useRef 훅을 사용하여 비디오 요소를 참조합니다.
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  <video ref={videoRef} src={src} muted className="w-full h-auto rounded-lg" />;
+}
+```
+
+여기까지가 비디오를 재생하기 위한 기본적인 설정입니다. 다만 HLS.js를 사용하여 HLS 스트림을 재생하기 위해서는 추가적인 설정이 필요합니다.
+
+```typescript
+const video = videoRef.current; // HTMLVideoElement를 가리킵니다.
+
+const loadVideo = () => {
+  const hls = new Hls(); // HLS.js 인스턴스를 생성합니다.
+  if (video.canPlayType("application/vnd.apple.mpegurl")) {
+    // Safari 브라우저에서 HLS를 지원하는 경우
+    video.src = src; // HLS 스트림 URL을 비디오 소스로 설정합니다.
+  } else {
+    hls.loadSource(src); // HLS 스트림을 로드합니다.
+    hls.attachMedia(video); // 비디오 요소에 HLS.js를 연결합니다.
+  }
+};
+```
+
+사파리의 경우에는 HLS를 지원하므로, HLS 스트림 URL을 비디오 소스에 직접 설정합니다.
+그 외의 브라우저에서는 HLS.js를 사용하여 비디오 스트림을 로드하고, 비디오 요소에 연결합니다.
+
+_최근 크로미움 기반에서 HLS를 지원하는 듯한 내용이 있습니다. 자세한 내용은 <a href="https://www.chromium.org/audio-video/" target="_blank">여기</a>를 참고하세요._
+
+여기까지 HLS 비디오를 재생하기 위한 기본적인 설정을 마쳤습니다. 이제 해당 컴포넌트에 HLS 스트림 URL을 전달하여 비디오를 재생할 수 있습니다.
+
+<div className="flex flex-col items-center justify-center w-full h-full not-prose gap-3 mb-10">
+  <VideoPlayer src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" />
+  <span className="text-neutral-500 text-sm">짠!</span>
+</div>
+
+짠! 정말 쉽게 HLS 스트림을 사용하여 비디오를 재생하는 React 컴포넌트를 만들어봤습니다.
+바닐라 자바스크립트나 Vue, Svelte 등 다른 프레임워크에서도 비슷한 방식으로 HLS.js를 사용할 수 있습니다.
+이제 한 단계 더 나아가 비디오 타임라인을 구현해보겠습니다.
+
+### 비디오 타임라인 구현하기
+
+지금 위에 보이는 비디오 플레이어는 아마 아래와 같은 형식의 코드 일 것입니다.
+
+```typescript
+"use client";
+
+import { useEffect, useRef } from "react";
+import Hls from "hls.js";
+
+export default function VideoPlayer({ src }: { src: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video) return;
+    const loadVideo = () => {
+      const hls = new Hls();
+      if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = src;
+      } else {
+        hls.loadSource(src);
+        hls.attachMedia(video);
+      }
+    };
+    loadVideo();
+  }, [src]);
+
+  return (
+    <video
+      ref={videoRef}
+      className="w-full h-auto rounded-lg"
+      controls
+      crossOrigin="anonymous"
+    ></video>
+  );
+}
+```
+
+이제 우리가 해야할건 비디오를 순회하며 각 화면을 캡쳐하여 배열에 저장하는 것입니다.
+우선 필요한 변수를 선언해보겠습니다.
+
+```typescript
+let canProcess = false; // 비디오 캡쳐 가능 여부
+const frameCanvas = document.createElement("canvas"); // 비디오 캡쳐를 위한 캔버스
+const frameContext = frameCanvas.getContext("2d"); // 캔버스 컨텍스트
+let framesCount = 0; // 캡쳐된 프레임 수
+const maxFrames = 15; // 최대 프레임 수 제한
+```
+
+이제 비디오가 로드되면 캔버스를 사용하여 비디오의 프레임을 캡쳐하는 방법에 대해 알아보겠습니다.
+
+```typescript
+const captureFrame = () => {
+  if (!frameContext || !canProcess) return;
+
+  frameCanvas.width = video.videoWidth;
+  frameCanvas.height = video.videoHeight;
+  frameContext.drawImage(video, 0, 0, frameCanvas.width, frameCanvas.height);
+
+  // 이미지 품질 조정(0.7은 70% 품질)
+  const frame = frameCanvas.toDataURL("image/jpeg", 0.7);
+  setFrames((prevFrames) => [...prevFrames, frame]);
+};
+```
+
+캔버스의 사이즈를 비디오의 사이즈와 동일하게 설정하고, `drawImage` 메서드를 사용하여 비디오의 현재 프레임을 캡쳐합니다.
+캡쳐된 이미지는 `toDataURL` 메서드를 사용하여 JPEG 형식으로 변환하고, 배열에 저장하게 됩니다.
+이 때, `toDataURL` 메서드의 두 번째 인자로 품질을 조정할 수 있으므로 적절하게 조정해주면 됩니다.
+
+하지만 이렇게 해서야 한번만 캡쳐되고 말기에, 우리는 이벤트를 활용하여 `framesConunt`가 `maxFrames`에 도달할 때까지 캡쳐를 반복해야 합니다.
+우선 `captureFrame` 함수에 아래 코드를 추가해줍니다.
+
+```typescript
+framesCount++; // 캡쳐된 프레임 수 증가
+
+// 비디오 시간 계산 및 이동
+const duration = video.duration;
+const nextTime = (framesCount * duration) / maxFrames; // 다음 캡쳐 시간
+
+// 프레임 수가 최대 프레임 수에 도달하거나 비디오의 끝에 도달한 경우
+if (framesCount >= maxFrames || nextTime >= duration) {
+  canProcess = false;
+  video.currentTime = 0;
+  return;
+}
+
+video.currentTime = nextTime;
+```
+
+이제 `captureFrame` 함수를 비디오의 `seeked` 이벤트에 연결해주면 됩니다.
+_이벤트 리스너 제거도 잊지 마세요!_
+
+```typescript
+video.addEventListener("loadeddata", () => {
+  canProcess = true; // 비디오가 로드되면 캡쳐 가능
+});
+
+video.addEventListener("seeked", captureFrame);
+```
+
+여기까지 진행했다면, 비디오를 순회하며 캡쳐하여 배열에 저장하였을 것입니다.
+남은 건 이 배열을 길게 늘어뜨려 타임라인을 구현하는 것입니다. (생략)
+
+잘 구현했다면 이와 같은 모습을 볼 수 있을 것 입니다.
+
+<VideoTimeline src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" />
+
+저 같은 경우는 15 프레임을 캡쳐하여 타임라인을 구현했지만, 비디오의 길이에 따라 적절한 프레임 수를 조정해주면 됩니다.
+예를 들어 width에 따라 프레임 수를 조정하는 방법도 있습니다.
+
+해당 아이디어를 바탕을 다양한 방법으로 확장할 수 있으니 본인만의 타임라인을 만들어 볼 수 있을 것 입니다.
+
+<span className="text-sm text-neutral-500 mt-10">
+  글 내용에 대해 궁금한 점이나 코드에 문제가 있다면 메일로 연락 주시면
+  감사하겠습니다.
+</span>

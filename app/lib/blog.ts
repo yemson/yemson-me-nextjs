@@ -1,34 +1,28 @@
-import fs from "fs";
+import { readdir } from "fs/promises";
 import path from "path";
-import matter from "gray-matter";
 
-const POSTS_PATH = path.join(process.cwd(), "content", "blog");
-
-export type BlogMetadata = {
+interface BlogMetadata {
   slug: string;
   title: string;
+  description: string;
   date: string;
-  description?: string;
-  image?: string;
-};
+}
 
-export function getBlogList(): BlogMetadata[] {
-  const files = fs.readdirSync(POSTS_PATH);
+export async function getBlogList(): Promise<BlogMetadata[]> {
+  const projectPath = path.resolve(process.cwd(), "content", "blog");
 
-  return files
-    .filter((file) => file.endsWith(".mdx"))
-    .map((file) => {
-      const fullPath = path.join(POSTS_PATH, file);
-      const fileContents = fs.readFileSync(fullPath, "utf8");
-      const { data } = matter(fileContents);
+  const slugs = await readdir(projectPath, { withFileTypes: true });
 
-      return {
-        slug: file.replace(/\.mdx$/, ""),
-        title: data.title || "제목 없음",
-        date: data.date || "",
-        description: data.description || "",
-        image: data.image || "",
-      };
+  const posts = await Promise.all(
+    slugs.map(async ({ name }) => {
+      const { metadata } = await import(`/content/blog/${name}`);
+
+      const slug = name.replace(/\.mdx$/, "");
+      return { slug, ...metadata };
     })
-    .sort((a, b) => b.date.localeCompare(a.date)); // 최신 순 정렬
+  );
+
+  posts.sort((a, b) => +new Date(b.date) - +new Date(a.date));
+
+  return posts;
 }

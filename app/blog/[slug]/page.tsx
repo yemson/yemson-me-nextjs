@@ -1,3 +1,4 @@
+import Contact from "@/app/components/contact";
 import fs from "fs";
 import path from "path";
 
@@ -33,10 +34,24 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { default: Post } = await import(`@/content/blog/${slug}.mdx`);
+  const { default: Post, metadata } = await import(
+    `@/content/blog/${slug}.mdx`
+  );
   return (
-    <div className="slide-enter-content prose prose-neutral dark:prose-invert max-w-none">
+    <div className="slide-enter-content prose prose-neutral dark:prose-invert max-w-none pb-12">
+      <div className="not-prose my-12">
+        <p className="text-center text-sm text-neutral-500 dark:text-neutral-400 mb-4">
+          {metadata.date}
+        </p>
+        <h1 className="text-3xl text-center font-bold mb-1">
+          {metadata.title}
+        </h1>
+        <p className="text-center text-neutral-500 dark:text-neutral-400">
+          {metadata.description}
+        </p>
+      </div>
       <Post />
+      <Contact />
     </div>
   );
 }
