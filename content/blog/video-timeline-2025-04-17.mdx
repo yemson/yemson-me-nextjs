@@ -70,7 +70,7 @@ _최근 크로미움 기반에서 HLS를 지원하는 듯한 내용이 있습니
 여기까지 HLS 비디오를 재생하기 위한 기본적인 설정을 마쳤습니다. 이제 해당 컴포넌트에 HLS 스트림 URL을 전달하여 비디오를 재생할 수 있습니다.
 
 <div className="flex flex-col items-center justify-center w-full h-full not-prose gap-3 mb-10">
-  <VideoPlayer src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" />
+  <VideoPlayer src="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8" />
   <span className="text-neutral-500 text-sm">짠!</span>
 </div>
 
@@ -185,7 +185,7 @@ video.addEventListener("seeked", captureFrame);
 
 잘 구현했다면 이와 같은 모습을 볼 수 있을 것 입니다.
 
-<VideoTimeline src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" />
+<VideoTimeline src="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8" />
 
 저 같은 경우는 15 프레임을 캡쳐하여 타임라인을 구현했지만, 비디오의 길이에 따라 적절한 프레임 수를 조정해주면 됩니다.
 예를 들어 width에 따라 프레임 수를 조정하는 방법도 있습니다.
