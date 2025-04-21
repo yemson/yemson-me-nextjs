@@ -1,5 +1,5 @@
-import VideoTimeline from "@/app/components/video-timeline";
-import VideoPlayer from "@/app/components/video-player";
+import VideoTimeline from "@/app/components/video-timeline/video-timeline";
+import VideoPlayer from "@/app/components/video-timeline/video-player";
 
 export const metadata = {
   title: "HLS 비디오 타임라인 구현하기",
@@ -76,7 +76,7 @@ _최근 크로미움 기반에서 HLS를 지원하는 듯한 내용이 있습니
 
 짠! 정말 쉽게 HLS 스트림을 사용하여 비디오를 재생하는 React 컴포넌트를 만들어봤습니다.
 바닐라 자바스크립트나 Vue, Svelte 등 다른 프레임워크에서도 비슷한 방식으로 HLS.js를 사용할 수 있습니다.
-이제 한 단계 더 나아가 비디오 타임라인을 구현해보겠습니다.
+이제 한 단계 더 나아가 비디오 타임라인을 구현해 보겠습니다.
 
 ### 비디오 타임라인 구현하기
 
@@ -118,8 +118,8 @@ export default function VideoPlayer({ src }: { src: string }) {
 }
 ```
 
-이제 우리가 해야할건 비디오를 순회하며 각 화면을 캡쳐하여 배열에 저장하는 것입니다.
-우선 필요한 변수를 선언해보겠습니다.
+이제 우리가 해야 할 건 비디오를 순회하며 각 화면을 캡처하여 배열에 저장하는 것입니다.
+우선 필요한 변수를 선언해 보겠습니다.
 
 ```typescript
 let canProcess = false; // 비디오 캡쳐 가능 여부
@@ -129,7 +129,7 @@ let framesCount = 0; // 캡쳐된 프레임 수
 const maxFrames = 15; // 최대 프레임 수 제한
 ```
 
-이제 비디오가 로드되면 캔버스를 사용하여 비디오의 프레임을 캡쳐하는 방법에 대해 알아보겠습니다.
+이제 비디오가 로드되면 캔버스를 사용하여 비디오의 프레임을 캡처하는 방법에 대해 알아보겠습니다.
 
 ```typescript
 const captureFrame = () => {
@@ -145,12 +145,12 @@ const captureFrame = () => {
 };
 ```
 
-캔버스의 사이즈를 비디오의 사이즈와 동일하게 설정하고, `drawImage` 메서드를 사용하여 비디오의 현재 프레임을 캡쳐합니다.
-캡쳐된 이미지는 `toDataURL` 메서드를 사용하여 JPEG 형식으로 변환하고, 배열에 저장하게 됩니다.
-이 때, `toDataURL` 메서드의 두 번째 인자로 품질을 조정할 수 있으므로 적절하게 조정해주면 됩니다.
+캔버스의 사이즈를 비디오의 사이즈와 동일하게 설정하고, `drawImage` 메서드를 사용하여 비디오의 현재 프레임을 캡처합니다.
+캡처된 이미지는 `toDataURL` 메서드를 사용하여 JPEG 형식으로 변환하고, 배열에 저장하게 됩니다.
+이때, `toDataURL` 메서드의 두 번째 인자로 품질을 조정할 수 있으므로 적절하게 조정해 주면 됩니다.
 
-하지만 이렇게 해서야 한번만 캡쳐되고 말기에, 우리는 이벤트를 활용하여 `framesConunt`가 `maxFrames`에 도달할 때까지 캡쳐를 반복해야 합니다.
-우선 `captureFrame` 함수에 아래 코드를 추가해줍니다.
+하지만 이렇게 해서야 한 번만 캡처되고 말기에, 우리는 이벤트를 활용하여 `framesConunt`가 `maxFrames`에 도달할 때까지 캡처를 반복해야 합니다.
+우선 `captureFrame` 함수에 아래 코드를 추가해 줍니다.
 
 ```typescript
 framesCount++; // 캡쳐된 프레임 수 증가
@@ -169,7 +169,7 @@ if (framesCount >= maxFrames || nextTime >= duration) {
 video.currentTime = nextTime;
 ```
 
-이제 `captureFrame` 함수를 비디오의 `seeked` 이벤트에 연결해주면 됩니다.
+이제 `captureFrame` 함수를 비디오의 `seeked` 이벤트에 연결해 주면 됩니다.
 _이벤트 리스너 제거도 잊지 마세요!_
 
 ```typescript
@@ -180,10 +180,10 @@ video.addEventListener("loadeddata", () => {
 video.addEventListener("seeked", captureFrame);
 ```
 
-여기까지 진행했다면, 비디오를 순회하며 캡쳐하여 배열에 저장하였을 것입니다.
+여기까지 진행했다면, 비디오를 순회하며 캡처하여 배열에 저장하였을 것입니다.
 남은 건 이 배열을 길게 늘어뜨려 타임라인을 구현하는 것입니다. (생략)
 
-잘 구현했다면 이와 같은 모습을 볼 수 있을 것 입니다.
+잘 구현했다면 이와 같은 모습을 볼 수 있을 것입니다.
 
 <div className="not-prose flex flex-col items-center justify-center w-full h-full gap-3 mb-10">
   <VideoTimeline src="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8" />
@@ -194,10 +194,10 @@ video.addEventListener("seeked", captureFrame);
   </div>
 </div>
 
-저 같은 경우는 15 프레임을 캡쳐하여 타임라인을 구현했지만, 비디오의 길이에 따라 적절한 프레임 수를 조정해주면 됩니다.
+저 같은 경우는 15 프레임을 캡처하여 타임라인을 구현했지만, 비디오의 길이에 따라 적절한 프레임 수를 조정해 주면 됩니다.
 예를 들어 width에 따라 프레임 수를 조정하는 방법도 있습니다.
 
-해당 아이디어를 바탕을 다양한 방법으로 확장할 수 있으니 본인만의 타임라인을 만들어 볼 수 있을 것 입니다.
+해당 아이디어를 바탕을 다양한 방법으로 확장할 수 있으니 본인만의 타임라인을 만들어 볼 수 있을 것입니다.
 
 <span className="text-sm text-neutral-500 mt-10">
   글 내용에 대해 궁금한 점이나 코드에 문제가 있다면 메일로 연락 주시면

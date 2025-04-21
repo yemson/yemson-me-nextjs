@@ -1,0 +1,177 @@
+import ImageCompare from "@/app/components/image-compare/image-compare";
+
+export const metadata = {
+  title: "Input Range로 이미지 비교 컴포넌트 구현하기",
+  description:
+    "Input Range를 이용해 이미지를 비교할 수 있는 컴포넌트를 구현하는 방법",
+  date: "2025-04-21",
+};
+
+<img
+  src="https://res.cloudinary.com/dd5hga1qy/image/upload/v1745246017/image_rgmsrw.png"
+  className="rounded-lg"
+/>
+
+어떤 이미지를 비교할 때, 두 이미지를 나란히 보여주는 것보다 슬라이더를 이용해 좌우로 움직이며 비교해 보는 것이 사용자 경험이 더 좋을 수 있습니다.
+이런 기능을 구현하기 위해서 우리는 라이브러리를 사용하거나 미리 구현된 컴포넌트를 가져다 쓸 수 있습니다.
+하지만, 이번 글에서는 보다 쉬운 방법으로 간단하게 구현해 보겠습니다.
+
+## 구현
+
+우선, input에는 여러 가지 타입이 존재합니다.
+`text`, `number`, `range` 등 다양한 타입이 존재하는데, 우리는 그중에서 `range` 타입을 사용하여 슬라이더를 구현할 것입니다.
+`range` 타입은 가장 기본적인 슬라이더 기능을 제공하며, 사용자가 마우스로 좌우를 드래그하며 최솟값과 최댓값 사이의 값을 선택할 수 있습니다.
+바로 이 점을 사용한다면 아주 쉽게 이미지 비교 컴포넌트를 구현할 수 있습니다.
+
+기본적인 이미지를 보여주는 컴포넌트를 만들어 보겠습니다.
+
+```typescript
+export default function ImageCompare({ src }: { src: string }) {
+  return (
+    <div className="w-full h-96">
+      <img
+        src={src}
+        alt="기본 이미지"
+        className="object-cover rounded-lg"
+        style={{ width: "100%", height: "100%" }}
+      />
+    </div>
+  );
+}
+```
+
+정말 간단하게 이미지를 보여주는 컴포넌트를 만들 수 있었습니다.
+이제 비교할 이미지가 있어야 하기 때문에, 두 개의 이미지를 프롭으로 받고 겹치게 해보겠습니다.
+
+```typescript
+export default function ImageCompare({
+  beforeImage,
+  afterImage,
+}: {
+  beforeImage: string;
+  afterImage: string;
+}) {
+  return (
+    <div className="relative w-full h-96">
+      <img
+        src={beforeImage}
+        alt="비교할 이미지"
+        className="absolute top-0 left-0 object-cover rounded-lg"
+        style={{ width: "100%", height: "100%" }}
+      />
+      <img
+        src={afterImage}
+        alt="비교할 이미지"
+        className="absolute top-0 left-0 object-cover rounded-lg"
+        style={{ width: "100%", height: "100%" }}
+      />
+    </div>
+  );
+}
+```
+
+여기까지 구현하고 나서 개발자 도구를 열어보면, 두 개의 이미지가 겹쳐져 있는 것을 확인할 수 있습니다.
+이제 이 이미지들 아래에 슬라이더를 추가해 보겠습니다.
+
+```typescript
+<>
+  <div className="relative w-full h-96">
+    <img
+      src={beforeImage}
+      alt="비교할 이미지"
+      className="absolute top-0 left-0 object-cover rounded-lg"
+      style={{ width: "100%", height: "100%" }}
+    />
+    <img
+      src={afterImage}
+      alt="비교할 이미지"
+      className="absolute top-0 left-0 object-cover rounded-lg"
+      style={{ width: "100%", height: "100%" }}
+    />
+  </div>
+  <input
+    type="range"
+    min="0"
+    max="100"
+    defaultValue="50"
+    className="w-full h-full cursor-pointer"
+  />
+</>
+```
+
+이제 슬라이더를 추가했으니, 슬라이더가 움직일 때마다 그 값을 이용해 이미지를 그만큼 잘라내어야 우리가 원하는 비교 기능을 구현할 수 있습니다.
+이 방법은 어떻게 구현하느냐에 따라 여러 가지 방법이 있을 수 있지만, 가장 간단하고 마법 같은 방법은 `clip-path`를 이용하는 것입니다.
+
+> clip-path CSS 속성은 요소의 클리핑 범위를 지정합니다. 클리핑 범위 안의 부분은 보여지고, 바깥은 숨겨집니다.
+> [MDN - clip-path](https://developer.mozilla.org/ko/docs/Web/CSS/clip-path)
+
+`clip-path` 속성을 이용하면, 슬라이더의 값에 따라 이미지를 잘라내는 효과를 줄 수 있습니다.
+우선 슬라이더의 값을 상태로 관리하기 위해 `useState`를 사용하여 슬라이더의 값을 관리해 보겠습니다.
+
+```typescript
+import { useState } from "react";
+
+const [sliderPos, setSliderPos] = useState(50);
+
+const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setSliderPos(Number(e.target.value));
+};
+```
+
+이제 슬라이더의 값을 상태로 관리할 수 있게 되었으니, 슬라이더의 값이 바뀔 때마다 `handleSliderChange` 함수를 호출하여 상태를 업데이트합니다.
+슬라이더의 값은 0부터 100까지의 값을 가지므로, `clip-path` 속성에 적용할 수 있는 값으로 변환해 주어야 합니다.
+`clip-path` 속성은 `inset` 함수를 사용하여 사각형을 정의할 수 있습니다.
+`inset` 함수는 `top`, `right`, `bottom`, `left` 값을 받아 사각형을 정의합니다.
+`clip-path` 속성에 `inset` 함수를 사용하여 슬라이더의 값을 적용해 보겠습니다.
+
+```typescript
+const clipPathValue = `inset(0 ${100 - sliderPos}% 0 0)`;
+```
+
+이제 `clip-path` 속성을 이용하여 이미지를 잘라내는 효과를 줄 수 있습니다.
+
+```typescript
+<>
+  <div className="relative w-full h-96">
+    <img
+      src={beforeImage}
+      alt="비교할 이미지"
+      className="absolute top-0 left-0 object-cover rounded-lg"
+      style={{ width: "100%", height: "100%" }}
+    />
+    <img
+      src={afterImage}
+      alt="비교할 이미지"
+      className="absolute top-0 left-0 object-cover rounded-lg"
+      style={{
+        width: "100%",
+        height: "100%",
+        clipPath: clipPathValue,
+      }}
+    />
+  </div>
+  <input
+    type="range"
+    min="0"
+    max="100"
+    defaultValue="50"
+    className="w-full h-full cursor-pointer"
+    onChange={handleSliderChange}
+  />
+</>
+```
+
+<div className="mb-8">
+  <ImageCompare
+    beforeImage="https://res.cloudinary.com/dd5hga1qy/image/upload/v1745242558/DSCF0530-2_yzt30n.webp"
+    afterImage="https://res.cloudinary.com/dd5hga1qy/image/upload/v1745242559/DSCF0530-_1__to1mzl.webp"
+  />
+</div>
+
+뺌! 정말 간단하게 이미지 비교 컴포넌트를 구현할 수 있었습니다.
+이제 이를 바탕으로 더 많은 기능을 추가해 보거나, 다양한 스타일을 적용하여 나만의 이미지 비교 컴포넌트를 만들어보세요.
+
+<span className="text-sm text-neutral-500 mt-10">
+  글 내용에 대해 궁금한 점이나 코드에 문제가 있다면 메일로 연락 주시면
+  감사하겠습니다.
+</span>
