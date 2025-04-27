@@ -11,44 +11,37 @@ export const metadata = {
 
 플레이어의 실시간 세션 로그를 수집·시각화하여 사용자 경험과 오류 상황을 정밀 분석하는 통합 분석 시스템
 
-링크: [Media Analytics 사용 가이드](https://guide.ncloud-docs.com/docs/ma-screen)
+🔗 [Media Analytics 사용 가이드](https://guide.ncloud-docs.com/docs/ma-screen)
+
+---
 
 #### 사용 기술
 
-<SkillBadge skill="Vue" src="vue.svg" /> <SkillBadge
-  skill="Nuxt"
-  src="nuxt.svg"
-/> <SkillBadge skill="Tailwind CSS" src="tailwind.svg" />
+<SkillBadge skill="Vue" src="vue.svg" />
+<SkillBadge skill="Nuxt" src="nuxt.svg" />
+<SkillBadge skill="Tailwind CSS" src="tailwind.svg" />
+
+---
 
 #### 주요 기능
 
-- VPE(Video Player Enhancement)와 자동 연동되어 플레이어 세션 로그를 실시간 수집 및 시각화
-- Highcharts를 활용한 **사용자 인터랙션 기반의 지표 분석 UI** 구현
-- 공통 필터 구조를 통해 다양한 페이지에서 **동일 조건 기반 데이터 비교** 지원
-- **오류 발생 시 알림 전송 기능**으로 민감한 장애 상황에 즉각 대응
-- 한국어, 영어, 일본어를 지원하는 **다국어(i18n) 구조 적용**으로 글로벌 서비스 대응
+- **VPE 연동 실시간 세션 로그 수집 + 시각화**
+- **Highcharts 기반 인터랙션 시각화 UI** (툴팁, 확대 등)
+- **전역 공통 필터 구조**로 페이지 간 조건 유지 및 비교 지원
+- **에러 발생 시 알림 전송**, 장애 인지 속도 개선
+- **i18n 적용 (한/영/일)**, 글로벌 서비스 대응 완료
+
+---
 
 #### 담당 역할 / 기여도
 
-- **Nuxt 기반 전체 프론트엔드 구조 설계 및 구현**
-- **시각화 컴포넌트 개발:**
+- **Nuxt 기반 전체 프론트 구조 설계 및 구현 총괄**
+- **Highcharts 시각화 컴포넌트 개발** (인터랙션 포함)
+- **전역 필터 시스템 설계 및 구현** (`useState`)
+- **2차 인증 보안 기능 개발** (OTP + 이메일)
+- **i18n 적용 및 언어 전환 UI + 테스트 대응**
 
-  - Highcharts를 이용해 확대, 툴팁 등 **인터랙션 요소를 포함한 분석 차트 구현**
-
-- **공통 필터 구조 설계 및 적용:**
-
-  - `useState` 기반 전역 필터 컴포저블 구현
-  - `sessionStorage`와 연동해 새로고침 후에도 필터 값 유지
-  - 전 페이지 공통 적용으로 필터 조건 일관성 확보
-
-- **보안 기능 강화:**
-
-  - OTP + 이메일 기반 **2차 인증 로직 개발**, 인증 흐름에 따른 유저 경험 정비
-
-- **다국어(i18n) 지원 구현:**
-  - `locale/` 폴더에 JSON 파일 분리 관리
-  - Nuxt i18n 모듈을 사용해 코드 내 텍스트를 동적으로 치환
-  - 언어 전환 UI 및 각 페이지별 번역 상태 테스트까지 완료
+---
 
 #### 스크린샷
 
