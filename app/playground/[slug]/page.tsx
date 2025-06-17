@@ -39,7 +39,6 @@ export default async function Page({
   );
   return (
     <>
-      <BackButton />
       <div className="slide-enter-content prose prose-neutral dark:prose-invert max-w-none pb-12">
         <div className="not-prose my-12">
           <p className="text-center text-sm text-neutral-500 dark:text-neutral-400 mb-4">
