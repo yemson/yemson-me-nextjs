@@ -36,6 +36,17 @@ export default function Header() {
           >
             글
           </Link>
+
+          <Link
+            href="/playground"
+            className={`no-underline transition-opacity duration-200 ${
+              pathname.startsWith("/playground")
+                ? "opacity-100"
+                : "opacity-50 hover:opacity-100"
+            }`}
+          >
+            놀이터
+          </Link>
         </nav>
       </div>
     </header>

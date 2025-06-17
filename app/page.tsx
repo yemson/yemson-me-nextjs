@@ -10,7 +10,7 @@ export async function generateMetadata() {
 
 export default function Home() {
   return (
-    <div className="slide-enter-content prose prose-neutral dark:prose-invert max-w-none pb-12">
+    <div className="slide-enter-content prose prose-neutral dark:prose-invert max-w-none pb-12 pt-6">
       <About />
     </div>
   );
