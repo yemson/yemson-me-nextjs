@@ -1,4 +1,5 @@
 import About from "@/content/about.mdx";
+import Projects from "./components/projects";
 
 export async function generateMetadata() {
   const { metadata } = await import(`@/content/about.mdx`);
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <div className="slide-enter-content prose prose-neutral dark:prose-invert max-w-none pb-12 pt-6">
       <About />
+      <Projects />
     </div>
   );
 }
