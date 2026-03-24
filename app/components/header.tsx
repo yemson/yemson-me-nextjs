@@ -16,9 +16,7 @@ export default function Header() {
           <Link
             href="/"
             className={`no-underline transition-opacity duration-200 ${
-              pathname === "/" ||
-              pathname.startsWith("/project") ||
-              pathname === ""
+              pathname === "/" || pathname === ""
                 ? "opacity-100"
                 : "opacity-50 hover:opacity-100"
             }`}
@@ -27,25 +25,14 @@ export default function Header() {
           </Link>
 
           <Link
-            href="/blog"
+            href="/project"
             className={`no-underline transition-opacity duration-200 ${
-              pathname.startsWith("/blog")
+              pathname.startsWith("/project")
                 ? "opacity-100"
                 : "opacity-50 hover:opacity-100"
             }`}
           >
-            글
-          </Link>
-
-          <Link
-            href="/playground"
-            className={`no-underline transition-opacity duration-200 ${
-              pathname.startsWith("/playground")
-                ? "opacity-100"
-                : "opacity-50 hover:opacity-100"
-            }`}
-          >
-            놀이터
+            프로젝트
           </Link>
         </nav>
       </div>

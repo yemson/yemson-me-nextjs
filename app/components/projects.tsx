@@ -1,12 +1,20 @@
 import ProjectCard from "./project-card";
 import { getProjects } from "../lib/projects";
 
-export default async function Projects() {
+interface ProjectsProps {
+  showHeading?: boolean;
+}
+
+export default async function Projects({
+  showHeading = true,
+}: ProjectsProps) {
   const projects = await getProjects();
 
   return (
     <>
-      <p className="mb-3 text-neutral-600 dark:text-neutral-300">프로젝트</p>
+      {showHeading ? (
+        <p className="mb-3 text-neutral-600 dark:text-neutral-300">프로젝트</p>
+      ) : null}
       <div className="not-prose">
         <div className="grid grid-cols-1 gap-4 min-[430px]:grid-cols-2 w-full">
           {projects.map((project) => (
