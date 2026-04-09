@@ -13,6 +13,13 @@ export default function ProjectCard({
   description,
   type,
 }: ProjectCardProps) {
+  const typeLabel =
+    type === "work" ? "회사 프로젝트" : type === "side" ? "개인 프로젝트" : "기타";
+  const typeClassName =
+    type === "side"
+      ? "bg-green-50 text-green-800 dark:bg-green-900/40 dark:text-green-300"
+      : "bg-neutral-200 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300";
+
   return (
     <Link
       href={`/project/${id}`}
@@ -24,12 +31,10 @@ export default function ProjectCard({
       <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
         {description}
       </p>
-      <span className="mt-2 inline-block rounded-full bg-neutral-200 px-2 py-1 text-xs font-semibold text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300">
-        {type === "work"
-          ? "회사 프로젝트"
-          : type === "side"
-          ? "개인 프로젝트"
-          : "기타"}
+      <span
+        className={`mt-2 inline-block rounded-full px-2 py-1 text-xs font-semibold ${typeClassName}`}
+      >
+        {typeLabel}
       </span>
     </Link>
   );

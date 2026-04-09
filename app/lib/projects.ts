@@ -6,7 +6,7 @@ interface ProjectMetadata {
   title: string;
   description: string;
   type: "work" | "side" | "other";
-  publishDate: string;
+  order: number;
 }
 
 export async function getProjects(): Promise<ProjectMetadata[]> {
@@ -23,7 +23,7 @@ export async function getProjects(): Promise<ProjectMetadata[]> {
     })
   );
 
-  posts.sort((a, b) => +new Date(b.publishDate) - +new Date(a.publishDate));
+  posts.sort((a, b) => a.order - b.order);
 
   return posts;
 }

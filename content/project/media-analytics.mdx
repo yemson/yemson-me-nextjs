@@ -5,15 +5,12 @@ export const metadata = {
   description:
     "플레이어의 실시간 세션 로그를 수집·시각화하여 사용자 경험과 오류 상황을 정밀 분석하는 통합 분석 시스템",
   type: "work",
+  order: 5,
 };
 
-#### MA(Media Analytics)
+#### [Media Analytics](https://guide.ncloud-docs.com/docs/ma-screen)
 
 플레이어의 실시간 세션 로그를 수집·시각화하여 사용자 경험과 오류 상황을 정밀 분석하는 통합 분석 시스템
-
-🔗 [Media Analytics 사용 가이드](https://guide.ncloud-docs.com/docs/ma-screen)
-
----
 
 #### 사용 기술
 
@@ -21,27 +18,12 @@ export const metadata = {
 <SkillBadge skill="Nuxt" src="nuxt.svg" />
 <SkillBadge skill="Tailwind CSS" src="tailwind.svg" />
 
----
-
-#### 주요 기능
-
-- **VPE 연동 실시간 세션 로그 수집 + 시각화**
-- **Highcharts 기반 인터랙션 시각화 UI** (툴팁, 확대 등)
-- **전역 공통 필터 구조**로 페이지 간 조건 유지 및 비교 지원
-- **에러 발생 시 알림 전송**, 장애 인지 속도 개선
-- **i18n 적용 (한/영/일)**, 글로벌 서비스 대응 완료
-
----
-
 #### 담당 역할 / 기여도
-
-- **Nuxt 기반 전체 프론트 구조 설계 및 구현 총괄**
-- **Highcharts 시각화 컴포넌트 개발** (인터랙션 포함)
-- **전역 필터 시스템 설계 및 구현** (`useState`)
-- **2차 인증 보안 기능 개발** (OTP + 이메일)
-- **i18n 적용 및 언어 전환 UI + 테스트 대응**
-
----
+- 반복되는 차트 구현 비용을 줄이기 위해 Highcharts를 공통 컴포넌트로 추상화하여, 대시보드, 리포트 전반에
+서 재사용 가능한 구조 설계
+- 페이지별로 분리되어 있던 필터 조건을 글로벌로 통합하여 분석 흐름의 일관성 개선
+- OTP + 이메일 기반 2단계 인증 도입으로 CSAP 인증 요구사항 충족
+- i18n 구조 설계를 통해 한국어, 영어, 일본어 다국어 지원 및 브라우저 언어 자동 감지 기능 구현
 
 #### 스크린샷
 
