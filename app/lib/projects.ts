@@ -7,6 +7,8 @@ interface ProjectMetadata {
   description: string;
   type: "work" | "side" | "other";
   order: number;
+  link?: string;
+  github?: string;
 }
 
 export async function getProjects(): Promise<ProjectMetadata[]> {

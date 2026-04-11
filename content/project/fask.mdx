@@ -1,0 +1,42 @@
+import SkillBadge from "@/app/components/skill-badge";
+
+export const metadata = {
+  title: "Fask",
+  description:
+    "브라우저에서 텍스트를 FSK 톤으로 송수신하며 소리로 데이터를 주고받는 과정을 실험한 프로젝트",
+  type: "side",
+  order: 9,
+  link: "https://fask.vercel.app",
+  github: "https://github.com/yemson/fask",
+};
+
+#### 사용 기술
+
+<SkillBadge skill="React" src="react.svg" />
+<SkillBadge skill="TypeScript" src="typescript.svg" />
+<SkillBadge skill="Vite" src="vite.svg" />
+<SkillBadge skill="Tailwind CSS" src="tailwind.svg" />
+<SkillBadge skill="Codex" src="codex.svg" />
+
+#### 담당 역할 / 기여도
+
+- 브라우저에서 텍스트를 FSK 톤으로 변환해 송신하고, 마이크 입력으로 다시 복원하는 TX/RX 분리 구조를 구현
+- V2 프로토콜을 기준으로 `PREAMBLE`, `SYNC`, `LEN_FLAG`, `PAYLOAD_BITS` 프레임을 정의해 디코딩 안정성 확보
+- 전송 데이터 길이에 따라 압축 여부를 판단하고 `pako` 기반 압축을 선택 적용해 음향 채널의 전송 효율 개선
+- RX 페이지에서 진단 배지와 Ts 프로파일을 조정할 수 있게 해 실제 환경에서 디코딩 실패 원인을 빠르게 확인할 수 있도록 구성
+- 단순 데모를 넘어서 `lint`, `test`, `build` 스크립트까지 갖춘 실험용 프로토콜 검증 환경으로 정리
+
+#### 스크린샷
+
+<div className="not-prose grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <img
+    src="/images/projects/fask-tx.png"
+    alt="fask-tx"
+    className="w-full rounded-2xl border border-neutral-200 dark:border-neutral-800"
+  />
+  <img
+    src="/images/projects/fask-rx.png"
+    alt="fask-rx"
+    className="w-full rounded-2xl border border-neutral-200 dark:border-neutral-800"
+  />
+</div>

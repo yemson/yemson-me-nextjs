@@ -1,9 +1,13 @@
 "use client";
 
-export default function BackButton() {
+interface BackButtonProps {
+  className?: string;
+}
+
+export default function BackButton({ className = "" }: BackButtonProps) {
   return (
     <button
-      className="opacity-50 hover:opacity-100 transition-opacity duration-200 cursor-pointer mb-4 flex items-center gap-1.5"
+      className={`opacity-50 hover:opacity-100 transition-opacity duration-200 cursor-pointer flex items-center gap-1.5 ${className}`}
       onClick={() => window.history.back()}
     >
       <svg

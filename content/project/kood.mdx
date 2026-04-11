@@ -1,0 +1,43 @@
+import SkillBadge from "@/app/components/skill-badge";
+
+export const metadata = {
+  title: "Kood",
+  description:
+    "RSS와 AI를 결합해 대한민국의 하루 분위기를 요약하고 시각화하는 일일 배치 기반 웹 프로젝트",
+  type: "side",
+  order: 8,
+  link: "https://kood-alpha.vercel.app",
+  github: "https://github.com/yemson/kood",
+};
+
+#### 사용 기술
+
+<SkillBadge skill="Vue" src="vue.svg" />
+<SkillBadge skill="Nuxt" src="nuxt.svg" />
+<SkillBadge skill="TypeScript" src="typescript.svg" />
+<SkillBadge skill="Tailwind CSS" src="tailwind.svg" />
+<SkillBadge skill="Supabase" src="supabase.svg" />
+<SkillBadge skill="Codex" src="codex.svg" />
+
+#### 담당 역할 / 기여도
+
+- RSS 수집 결과를 정규화하고 중복 제거한 뒤 AI 입력용 코퍼스로 재구성해 하루 단위 콘텐츠 생성 흐름 설계
+- Nuxt와 Supabase 기반으로 일일 배치 실행, 결과 저장, 날짜별 조회 API를 분리해 운영 가능한 구조로 구현
+- `poet_line`, `analyst_note`, `mood_scores`, `evidence_keywords`를 묶어 단순 요약이 아니라 감정 흐름 해석까지 제공하도록 구성
+- 날짜별 감정 점수에 따라 색조와 움직임이 달라지는 WebGL 안개 레이어를 구현해 데이터 시각화와 분위기 표현을 연결
+- `prefers-reduced-motion`, 탭 비활성 상태 pause, DPR 제한 등 성능과 접근성 제약까지 고려해 렌더링 안정성 확보
+
+#### 스크린샷
+
+<div className="not-prose grid grid-cols-2 gap-4">
+  <img
+    src="/images/projects/kood.png"
+    alt="kood-main"
+    className="w-full rounded-2xl border border-neutral-200 dark:border-neutral-800"
+  />
+  <img
+    src="/images/projects/kood-side.png"
+    alt="kood-side"
+    className="w-full rounded-2xl border border-neutral-200 dark:border-neutral-800"
+  />
+</div>
