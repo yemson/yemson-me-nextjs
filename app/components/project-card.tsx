@@ -17,7 +17,7 @@ export default function ProjectCard({
     type === "work" ? "회사 프로젝트" : type === "side" ? "개인 프로젝트" : "기타";
   const typeClassName =
     type === "side"
-      ? "bg-green-50 text-green-800 dark:bg-green-900/40 dark:text-green-300"
+      ? "border border-neutral-300 text-neutral-700 dark:border-neutral-600 dark:text-neutral-300"
       : "bg-neutral-200 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300";
 
   return (

@@ -34,6 +34,17 @@ export default function Header() {
           >
             프로젝트
           </Link>
+
+          <span className="w-px bg-neutral-300 dark:bg-neutral-700" aria-hidden />
+
+          <a
+            href="https://github.com/yemson"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="no-underline opacity-50 hover:opacity-100 transition-opacity duration-200"
+          >
+            Github
+          </a>
         </nav>
       </div>
     </header>
